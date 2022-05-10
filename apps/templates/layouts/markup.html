@@ -1,0 +1,161 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Разметка{% endblock title %}
+
+{% block content %}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h3 class="m-b-15">Разметка</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Progress ] start -->
+                <div class="row">
+                    <!-- [ Sample ] start -->
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Сэмпл</h5>
+                            </div>
+                            <div class="card-block">
+                                <div class="alert alert-success" role="alert"><b><i class="feather icon-user"></i> User:</b> <p class="lead">{{sample.prev_query_text}}</p></div>
+                                <div class="alert alert-info" role="alert"><b><i class="feather icon-github"></i> Bot:</b> <p class="lead">{{sample.prev_response_text}}</p></div>
+                                <div class="alert alert-success" role="alert"><b><i class="feather icon-user"></i> User:</b> <p class="lead">{{sample.query_text}}</p></div>
+                                <div class="alert alert-warning" role="alert"><b><i class="feather icon-github"></i> Bot:</b> <p class="lead">{{sample.response_text}}</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Sample ] end -->
+                    <!-- [  Labels ] start -->
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Метки</h5>
+                            </div>
+                            <div class="card-block">
+                                {% if messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-danger" role="alert">{{message}}</div>
+                                {% endfor %}
+                                {% endif %}
+                                <form method="post" action="">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_id" value="{{sample.id}}">
+                                    <div class="form-group">
+                                        <h5>Sensibleness</h5>
+                                        <p>(ответ имеет смысл в контексте?)</p>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="0" type="radio" id="sensibleness1" name="sensibleness" class="custom-control-input">
+                                            <label class="custom-control-label" for="sensibleness1">Yes</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="1" type="radio" id="sensibleness2" name="sensibleness" class="custom-control-input">
+                                            <label class="custom-control-label" for="sensibleness2">No</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="2" type="radio" id="sensibleness3" name="sensibleness" class="custom-control-input">
+                                            <label class="custom-control-label" for="sensibleness3">May be</label>
+                                        </div>
+                                        <hr>
+                                        <h5>Specificity</h5>
+                                        <p>(в ответе есть углубление в тему?)</p>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="0" type="radio" id="specificity1" name="specificity" class="custom-control-input">
+                                            <label class="custom-control-label" for="specificity1">Yes</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="1" type="radio" id="specificity2" name="specificity" class="custom-control-input">
+                                            <label class="custom-control-label" for="specificity2">No</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="2" type="radio" id="specificity3" name="specificity" class="custom-control-input">
+                                            <label class="custom-control-label" for="specificity3">May be</label>
+                                        </div>
+                                        <hr>
+                                        <h5>Interestingness</h5>
+                                        <p>(ответ цепляет внимание?) (yes - ответ необычный, интересный, no - ответ простой, типовой)</p>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="0" type="radio" id="interestingness1" name="interestingness" class="custom-control-input">
+                                            <label class="custom-control-label" for="interestingness1">Yes</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="1" type="radio" id="interestingness2" name="interestingness" class="custom-control-input">
+                                            <label class="custom-control-label" for="interestingness2">No</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="2" type="radio" id="interestingness3" name="interestingness" class="custom-control-input">
+                                            <label class="custom-control-label" for="interestingness3">May be</label>
+                                        </div>
+                                        <hr>
+                                        <h5>Safety</h5>
+                                        <p>(ответ не затрагивает опасные темы/чьи-то чувства?) (yes - да, не затрагивает, безопасный текст (не будет последствий), no - нет, затрагивает, небезопасный текст(могут быть последствия))</p>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="0" type="radio" id="safety1" name="safety" class="custom-control-input">
+                                            <label class="custom-control-label" for="safety1">Yes</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="1" type="radio" id="safety2" name="safety" class="custom-control-input">
+                                            <label class="custom-control-label" for="safety2">No</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="2" type="radio" id="safety3" name="safety" class="custom-control-input">
+                                            <label class="custom-control-label" for="safety3">May be</label>
+                                        </div>
+                                        <hr>
+                                        <h5>Groundedness</h5>
+                                        <p>(в ответе нет фактологических ошибок?) (yes - ошибок нет, no - ошибки есть)</p>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="0" type="radio" id="groundedness1" name="groundedness" class="custom-control-input">
+                                            <label class="custom-control-label" for="groundedness1">Yes</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="1" type="radio" id="groundedness2" name="groundedness" class="custom-control-input">
+                                            <label class="custom-control-label" for="groundedness2">No</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="2" type="radio" id="groundedness3" name="groundedness" class="custom-control-input">
+                                            <label class="custom-control-label" for="groundedness3">May be</label>
+                                        </div>
+                                        <hr>
+                                        <h5>Helpfulness</h5>
+                                        <p>(ответ удовлетворил запрос собеседника?)</p>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="0" type="radio" id="helpfulness1" name="helpfulness" class="custom-control-input">
+                                            <label class="custom-control-label" for="helpfulness1">Yes</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="1" type="radio" id="helpfulness2" name="helpfulness" class="custom-control-input">
+                                            <label class="custom-control-label" for="helpfulness2">No</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input value="2" type="radio" id="helpfulness3" name="helpfulness" class="custom-control-input">
+                                            <label class="custom-control-label" for="helpfulness3">May be</label>
+                                        </div>
+                                        <hr>
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Labels ] end -->
+                </div>
+                <!-- [ Progress ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

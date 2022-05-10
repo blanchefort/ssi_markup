@@ -1,0 +1,50 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Дашборд{% endblock title %}
+
+{% block content %}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h3 class="m-b-15">Дашборд</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Progress ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Прогресс</h5>
+                            </div>
+                            <div class="card-block">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-auto">
+                                        <i class="feather icon-zap f-30 text-c-green"></i>
+                                    </div>
+                                    <div class="col">
+                                        <h3 class="f-w-300">{{marked_count}}</h3>
+                                        <span class="d-block text-uppercase">РАЗМЕЧЕННЫХ СЭМПЛА</span>
+                                        {{user.username}} {{user.id}} {{user.email}} {{user.is_superuser}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Progress ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

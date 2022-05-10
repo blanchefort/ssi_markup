@@ -1,0 +1,90 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Загрузка / Выгрузка{% endblock title %}
+
+{% block content %}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h3 class="m-b-15">Загрузка / Выгрузка</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Progress ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Добавление одиночного сэмпла</h5>
+                            </div>
+                            <div class="card-block">
+                                {% if messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-info" role="alert">{{message}}</div>
+                                {% endfor %}
+                                {% endif %}
+                                
+                                <form method="post" action="">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {% for field in add_dialog_form%}
+                                        <label>{{field.label}}</label>
+                                        <input type="text" name="{{field.name}}" class="form-control m-b-15" placeholder="Text">
+                                        {% endfor %}
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Добавить</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Progress ] end -->
+                <!-- [ Progress ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Добавление json</h5>
+                            </div>
+                            <div class="card-block">
+                                {% if messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-info" role="alert">{{message}}</div>
+                                {% endfor %}
+                                {% endif %}
+                                
+
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" name="file" required class="custom-file-input" id="csvInputFile">
+                                            <label class="custom-file-label" for="csvInputFile">Выбрать файл</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <button type="submit" class="input-group-text">Загрузить</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Progress ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

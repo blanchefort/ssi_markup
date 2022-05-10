@@ -1,0 +1,37 @@
+
+    <nav class="pcoded-navbar">
+        <div class="navbar-wrapper">
+            <div class="navbar-brand header-logo">
+                <a target="_blank" 
+                   href="{% url 'home' %}" class="b-brand">
+                    <div class="b-bg">
+                        <i class="feather icon-edit-1"></i>
+                    </div>
+                    <span class="b-title">Разметка</span>
+                </a>
+                <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+            </div>
+            <div class="navbar-content scroll-div">
+                <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Навигация</label>
+                    </li>
+                    <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                        <a href="/" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Дашборд</span></a>
+                    </li>
+                    <li class="nav-item {% if 'markup' in segment %} active {% endif %}">
+                        <a href="{% url 'markup' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-edit-1"></i></span><span class="pcoded-mtext">Разметка</span></a>
+                    </li>
+                    <li class="nav-item {% if 'rules' in segment %} active {% endif %}">
+                        <a href="{% url 'rules' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span class="pcoded-mtext">Правила</span></a>
+                    </li>
+                    {% if user.is_superuser %}
+                    <li class="nav-item {% if 'upload' in segment %} active {% endif %}">
+                        <a href="{% url 'upload' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-download"></i></span><span class="pcoded-mtext">Загрузить / выгрузить</span></a>
+                    </li>
+                    {% endif %}
+                     
+                </ul>
+            </div>
+        </div>
+    </nav>
