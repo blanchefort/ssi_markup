@@ -20,6 +20,159 @@
 
         <div class="main-body">
             <div class="page-wrapper">
+                {% if user.is_superuser %}
+                <!-- [ First Line ] start -->
+                <div class="row">
+                    <!--[ Sample size ] start-->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card daily-sales">
+                            <div class="card-block">
+                                <h6 class="mb-4">Размер выборки</h6>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-9">
+                                        <h3 class="f-w-300 d-flex align-items-center m-b-0"><i class="feather icon-layers text-c-green f-30 m-r-10"></i>{{sample_count}}</h3>
+                                    </div>
+
+                                    <div class="col-3 text-right">
+                                        <p class="m-b-0">&nbsp;</p>
+                                    </div>
+                                </div>
+                                <div class="progress m-t-30" style="height: 7px;">
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--[ Sample size ] end-->
+                    <!--[ Partly completed ] start-->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card daily-sales">
+                            <div class="card-block">
+                                <h6 class="mb-4">Частично размечено</h6>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-9">
+                                        <h3 class="f-w-300 d-flex align-items-center m-b-0"><i class="feather icon-edit-1 text-c-green f-30 m-r-10"></i>{{partly_completed}}</h3>
+                                    </div>
+
+                                    <div class="col-3 text-right">
+                                        <p class="m-b-0">{{partly_completed_p}}%</p>
+                                    </div>
+                                </div>
+                                <div class="progress m-t-30" style="height: 7px;">
+                                    <div class="progress-bar progress-c-theme" role="progressbar" style="width: {{partly_completed_p}}%;" aria-valuenow="{{partly_completed_p}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--[ Partly completed ] end-->
+                    <!--[ Fully completed ] start-->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card daily-sales">
+                            <div class="card-block">
+                                <h6 class="mb-4">Полностью размечено</h6>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-9">
+                                        <h3 class="f-w-300 d-flex align-items-center m-b-0"><i class="feather icon-edit text-c-green f-30 m-r-10"></i>{{fully_completed}}</h3>
+                                    </div>
+
+                                    <div class="col-3 text-right">
+                                        <p class="m-b-0">{{fully_completed_p}}%</p>
+                                    </div>
+                                </div>
+                                <div class="progress m-t-30" style="height: 7px;">
+                                    <div class="progress-bar progress-c-theme" role="progressbar" style="width: {{fully_completed_p}}%;" aria-valuenow="{{fully_completed_p}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--[ Fully completed ] end-->
+                </div>
+                <!-- [ First Line ] end -->
+
+                <!-- [ Second Line ] start -->
+                <div class="row">
+                    <!-- [ rating list ] starts-->
+                <div class="col-xl-6 col-md-6">
+                    <div class="card user-list">
+                        <div class="card-header">
+                            <h5>Рейтинг по количеству разметок</h5>
+                        </div>
+                        <div class="card-block">
+                            <div class="row">
+                                {% for u in user_data|dictsort:"count" %}
+                                <div class="col-xl-12">
+                                    <h6 class="align-items-center float-left"><i class="fas fa-user f-10 m-r-10 text-c-yellow"></i> {{u.user}}</h6>
+                                    <h6 class="align-items-center float-right">{{u.count}}</h6>
+                                    <div class="progress m-t-30 m-b-20" style="height: 6px;">
+                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: {{u.count_p}}%;" aria-valuenow="{{u.count_p}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ rating list ] end-->
+                <!-- [ rating list ] starts-->
+                <!--<div class="col-xl-6 col-md-6">
+                    <div class="card user-list">
+                        <div class="card-header">
+                            <h5>Рейтинг по качеству разметки</h5>
+                        </div>
+                        <div class="card-block">
+                            <div class="row align-items-center justify-content-center m-b-20">
+                                <div class="col-6">
+                                    <h2 class="f-w-300 d-flex align-items-center float-left m-0">4.7 <i class="fas fa-star f-10 m-l-10 text-c-yellow"></i></h2>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="d-flex  align-items-center float-right m-0">0.4 <i class="fas fa-caret-up text-c-green f-22 m-l-10"></i></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <h6 class="align-items-center float-left"><i class="fas fa-star f-10 m-r-10 text-c-yellow"></i>5</h6>
+                                    <h6 class="align-items-center float-right">384</h6>
+                                    <div class="progress m-t-30 m-b-20" style="height: 6px;">
+                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <h6 class="align-items-center float-left"><i class="fas fa-star f-10 m-r-10 text-c-yellow"></i>4</h6>
+                                    <h6 class="align-items-center float-right">145</h6>
+                                    <div class="progress m-t-30  m-b-20" style="height: 6px;">
+                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <h6 class="align-items-center float-left"><i class="fas fa-star f-10 m-r-10 text-c-yellow"></i>3</h6>
+                                    <h6 class="align-items-center float-right">24</h6>
+                                    <div class="progress m-t-30  m-b-20" style="height: 6px;">
+                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <h6 class="align-items-center float-left"><i class="fas fa-star f-10 m-r-10 text-c-yellow"></i>2</h6>
+                                    <h6 class="align-items-center float-right">1</h6>
+                                    <div class="progress m-t-30  m-b-20" style="height: 6px;">
+                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <h6 class="align-items-center float-left"><i class="fas fa-star f-10 m-r-10 text-c-yellow"></i>1</h6>
+                                    <h6 class="align-items-center float-right">0</h6>
+                                    <div class="progress m-t-30  m-b-20" style="height: 6px;">
+                                        <div class="progress-bar" role="progressbar" style="width:0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                <!-- [ rating list ] end-->
+                </div>
+                <!-- [ Second Line ] end -->
+                
+                {% else %}
                 <!-- [ Progress ] start -->
                 <div class="row">
                     <div class="col-sm-12">
@@ -42,6 +195,7 @@
                     </div>
                 </div>
                 <!-- [ Progress ] end -->
+                {% endif %}
             </div>
         </div>
     </div>
