@@ -70,8 +70,8 @@ def index(request):
             'sample_count': sample_count, # Размер выборки
             'partly_completed': partly_completed, # Частично размечено
             'fully_completed': fully_completed, # Полностью размечено
-            'partly_completed_p': int((partly_completed + 1e-8) * 100 / sample_count), # %
-            'fully_completed_p': int((fully_completed + 1e-8) * 100 / sample_count), # %
+            'partly_completed_p': int(partly_completed * 100 / (sample_count + 1e-8)), # %
+            'fully_completed_p': int(fully_completed * 100 / (sample_count + 1e-8)), # %
             'user_data': calculate_user_statistics()
         }
     else:
