@@ -88,5 +88,5 @@ def calculate_user_statistics():
         if max_count < c:
             max_count = c
     for item in user_data:
-        item.update({'count_p': int(item['count'] * 100 / max_count)})
+        item.update({'count_p': int((item['count'] + 1e-8) * 100 / max_count)})
     return user_data
