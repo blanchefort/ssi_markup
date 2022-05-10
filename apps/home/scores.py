@@ -1,9 +1,11 @@
 """Считаем различные статистики"""
 import numpy as np
+from sklearn.metrics import cohen_kappa_score
 
 from django.db.models import Count
 from django.conf import settings
 from django.contrib.auth import get_user_model
+
 
 from apps.home.models import Dialogs, LabelledSSI
 
@@ -12,9 +14,9 @@ def calculate_gold():
     """Считаем gold-разметку
     """
     gold = []
-    dialogs = Dialogs.objects.exclude(is_labelled=1).annotate(num_labels=Count('labels_for_dialog'))
-    labelled_dialogs = [d for d in dialogs if d.num_labels > settings.USERS_PER_SAMPLE]
-    
+    dialogs = Dialogs.objects.annotate(num_labels=Count('labels_for_dialog'))
+    labelled_dialogs = [d for d in dialogs if d.num_labels >= settings.USERS_PER_SAMPLE]
+
     for d in labelled_dialogs:
         # groundedness
         yes = LabelledSSI.objects.filter(dialog=d).filter(groundedness=0).count()
@@ -72,6 +74,57 @@ def calculate_gold():
     return gold
 
 
+def kappa_score(user, gold):
+    """Считаем каппу Коена для пользователя"""
+    selected_target, selected_gold = [], []
+    for y in gold:
+        if LabelledSSI.objects.filter(changed_by=user).filter(dialog=y['dialog']).count() == 0:
+            continue
+        item = LabelledSSI.objects.filter(changed_by=user).filter(dialog=y['dialog']).first()
+        if (item.groundedness == 2 or \
+            item.helpfulness == 2 or \
+            item.interestingness == 2 or \
+            item.safety == 2 or \
+            item.sensibleness == 2 or \
+            item.specificity == 2):
+            continue
+        selected_target.append(item)
+        selected_gold.append(y)
+
+    if len(selected_target) < 1:
+        return 0
+
+    #groundedness
+    groundedness = cohen_kappa_score(
+        [i.groundedness for i in selected_target],
+        [i['groundedness'] for i in selected_gold])
+    #helpfulness
+    helpfulness = cohen_kappa_score(
+        [i.helpfulness for i in selected_target],
+        [i['helpfulness'] for i in selected_gold])
+    #interestingness
+    interestingness = cohen_kappa_score(
+        [i.interestingness for i in selected_target],
+        [i['interestingness'] for i in selected_gold])
+    #safety
+    safety = cohen_kappa_score(
+        [i.safety for i in selected_target],
+        [i['safety'] for i in selected_gold])
+    #sensibleness
+    sensibleness = cohen_kappa_score(
+        [i.sensibleness for i in selected_target],
+        [i['sensibleness'] for i in selected_gold])
+    #specificity
+    specificity = cohen_kappa_score(
+        [i.specificity for i in selected_target],
+        [i['specificity'] for i in selected_gold])
+
+    #average kappa
+    avg_kappa = (groundedness + helpfulness + interestingness + safety + sensibleness + specificity) / 6
+
+    return  avg_kappa #, groundedness, helpfulness, interestingness, safety, sensibleness, specificity
+
+
 def calculate_user_statistics():
     """Считаем метрики по пользователям"""
     gold = calculate_gold()
@@ -89,4 +142,17 @@ def calculate_user_statistics():
             max_count = c
     for item in user_data:
         item.update({'count_p': int(item['count'] * 100 / (max_count + 1e-8))})
+        kappa = kappa_score(item['user'], gold)
+
+        if kappa < 0:
+            kappa_p = 0
+        else:
+            kappa_p = kappa
+        kappa_p = int(kappa_p * 100)
+
+        item.update({'kappa': kappa})
+        item.update({'kappa_p': kappa_p})
     return user_data
+
+
+
