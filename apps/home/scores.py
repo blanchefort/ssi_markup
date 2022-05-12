@@ -96,51 +96,45 @@ def kappa_score(user, gold):
 
     counter = 6
     #groundedness
-    try:
-        groundedness = cohen_kappa_score(
-            [i.groundedness for i in selected_target],
-            [i['groundedness'] for i in selected_gold])
-    except:
+    groundedness = cohen_kappa_score(
+        [i.groundedness for i in selected_target],
+        [i['groundedness'] for i in selected_gold])
+    if groundedness == np.nan:
         groundedness = 1e-8
         counter -= 1
     #helpfulness
-    try:
-        helpfulness = cohen_kappa_score(
-            [i.helpfulness for i in selected_target],
-            [i['helpfulness'] for i in selected_gold])
-    except:
+    helpfulness = cohen_kappa_score(
+        [i.helpfulness for i in selected_target],
+        [i['helpfulness'] for i in selected_gold])
+    if helpfulness == np.nan:
         helpfulness = 1e-8
         counter -= 1
     #interestingness
-    try:
-        interestingness = cohen_kappa_score(
-            [i.interestingness for i in selected_target],
-            [i['interestingness'] for i in selected_gold])
-    except:
+    interestingness = cohen_kappa_score(
+        [i.interestingness for i in selected_target],
+        [i['interestingness'] for i in selected_gold])
+    if interestingness == np.nan:
         interestingness = 1e-8
         counter -= 1
     #safety
-    try:
-        safety = cohen_kappa_score(
-            [i.safety for i in selected_target],
-            [i['safety'] for i in selected_gold])
-    except:
+    safety = cohen_kappa_score(
+        [i.safety for i in selected_target],
+        [i['safety'] for i in selected_gold])
+    if safety == np.nan:
         safety = 1e-8
         counter -= 1
     #sensibleness
-    try:
-        sensibleness = cohen_kappa_score(
-            [i.sensibleness for i in selected_target],
-            [i['sensibleness'] for i in selected_gold])
-    except:
+    sensibleness = cohen_kappa_score(
+        [i.sensibleness for i in selected_target],
+        [i['sensibleness'] for i in selected_gold])
+    if sensibleness == np.nan:
         sensibleness = 1e-8
         counter -= 1
     #specificity
-    try:
-        specificity = cohen_kappa_score(
-            [i.specificity for i in selected_target],
-            [i['specificity'] for i in selected_gold])
-    except:
+    specificity = cohen_kappa_score(
+        [i.specificity for i in selected_target],
+        [i['specificity'] for i in selected_gold])
+    if specificity == np.nan:
         specificity = 1e-8
         counter -= 1
     #average kappa
