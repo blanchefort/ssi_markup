@@ -140,6 +140,8 @@ def kappa_score(user, gold):
     #average kappa
     avg_kappa = (groundedness + helpfulness + interestingness + safety + sensibleness + specificity) / counter
 
+    print(type(avg_kappa))
+
     return  avg_kappa
 
 
