@@ -138,9 +138,13 @@ def kappa_score(user, gold):
         specificity = 1e-8
         counter -= 1
     #average kappa
+
+    if counter == 0:
+        return 0
     avg_kappa = (groundedness + helpfulness + interestingness + safety + sensibleness + specificity) / counter
 
-    print(type(avg_kappa))
+    if avg_kappa == np.nan:
+        return 0
 
     return  avg_kappa
 
