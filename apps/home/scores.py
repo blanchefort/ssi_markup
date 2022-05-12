@@ -94,6 +94,10 @@ def kappa_score(user, gold):
     if len(selected_target) < 1:
         return 0
 
+    # escape NaN
+    if selected_target == selected_gold:
+        return 0
+    
     #groundedness
     groundedness = cohen_kappa_score(
         [i.groundedness for i in selected_target],
@@ -122,7 +126,7 @@ def kappa_score(user, gold):
     #average kappa
     avg_kappa = (groundedness + helpfulness + interestingness + safety + sensibleness + specificity) / 6
 
-    return  avg_kappa #, groundedness, helpfulness, interestingness, safety, sensibleness, specificity
+    return  avg_kappa
 
 
 def calculate_user_statistics():
