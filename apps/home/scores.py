@@ -125,6 +125,8 @@ def kappa_score(user, gold):
 
     #average kappa
     avg_kappa = (groundedness + helpfulness + interestingness + safety + sensibleness + specificity) / 6
+    if avg_kappa == np.nan:
+        avg_kappa == 0
 
     return  avg_kappa
 
