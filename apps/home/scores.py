@@ -168,6 +168,9 @@ def calculate_user_statistics():
         item.update({'count_p': int(item['count'] * 100 / (max_count + 1e-8))})
         kappa = kappa_score(item['user'], gold)
 
+        if kappa == np.nan:
+            kappa = 0
+
         if kappa < 0:
             kappa_p = 0
         else:
