@@ -4,6 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 import os
+import io, csv
 import json
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
@@ -12,10 +13,11 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.utils import timezone
 from django.db.models import Count
+from django.http import HttpResponse
 
 from apps.home.forms import AddDialog, UploadDialogs
 from apps.home.models import Dialogs, LabelledSSI
-from apps.home.scores import calculate_user_statistics
+from apps.home.scores import calculate_user_statistics, calculate_gold
 
 
 @login_required(login_url="/login/")
@@ -87,7 +89,7 @@ def markup(request):
 
 @login_required(login_url="/login/")
 def upload(request):
-    """Разметка"""
+    """Загрузка данных для разметки"""
     add_dialog_form = AddDialog()
     upload_dialogs_form = UploadDialogs()
     if request.method == 'POST':
@@ -130,9 +132,52 @@ def upload(request):
             else:
                 messages.error(request, 'Заполните поля')
 
+
+    dialogs = Dialogs.objects.filter(is_labelled=1).first()
     context = {
         'segment': 'upload',
         'add_dialog_form': add_dialog_form,
-        'upload_dialogs_form': upload_dialogs_form
+        'upload_dialogs_form': upload_dialogs_form,
     }
     return TemplateResponse(request, 'layouts/upload.html', context=context)
+
+
+@login_required(login_url="/login/")
+def download(request):
+    """Выгрузка размеченных данных"""
+    buffer = io.StringIO()
+    wr = csv.writer(buffer, quoting=csv.QUOTE_ALL)
+    golds = calculate_gold()
+
+    wr.writerow([
+        'prev_query_text',
+        'prev_response_text',
+        'query_text',
+        'response_text',
+        'groundedness',
+        'helpfulness',
+        'interestingness',
+        'safety',
+        'sensibleness',
+        'specificity'
+    ])
+    for g in golds:
+        wr.writerow([
+        g['dialog'].prev_query_text,
+        g['dialog'].prev_response_text,
+        g['dialog'].query_text,
+        g['dialog'].response_text,
+        g['groundedness'],
+        g['helpfulness'],
+        g['interestingness'],
+        g['safety'],
+        g['sensibleness'],
+        g['specificity']
+    ])
+
+    buffer.seek(0)
+    response = HttpResponse(buffer, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=ssi_gold.csv'
+
+    return response
+    

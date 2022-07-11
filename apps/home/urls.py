@@ -16,5 +16,7 @@ urlpatterns = [
     path('rules', views.rules, name='rules'),
     # upload
     path('upload', views.upload, name='upload'),
+    # download
+    path('download', views.download, name='download'),
 
 ]
